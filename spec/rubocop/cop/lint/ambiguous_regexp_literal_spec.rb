@@ -16,6 +16,19 @@ RSpec.describe RuboCop::Cop::Lint::AmbiguousRegexpLiteral do
         RUBY
       end
 
+      it 'something' do
+        expect_offense(<<~RUBY)
+          p /^[(]Correct answer(?:s*) (?:is|are) option(?:s)* ([\d]*)(?:, ([\d]*))*(?: and ([\d]*))*[)]$/
+            ^ Ambiguous regexp literal. Parenthesize the method arguments if it's surely a regexp literal, or add a whitespace to the right of the `/` if it should be a division.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          p(/^[(]Correct answer(?:s*) (?:is|are) option(?:s)* ([\d]*)(?:, ([\d]*))*(?: and ([\d]*))*[)]$/)
+        RUBY
+      end
+
+      
+
       it 'registers an offense and corrects when multiple arguments' do
         expect_offense(<<~RUBY)
           p /pattern/, foo

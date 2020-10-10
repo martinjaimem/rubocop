@@ -134,6 +134,33 @@ RSpec.describe RuboCop::Cop::Metrics::ClassLength, :config do
     end
   end
 
+  context 'when there is a multiple assignment on constants' do
+    it 'accepts a class with less than 5 lines' do
+      expect_no_offenses(<<~RUBY)
+        class Test
+          A = B = C = 1
+          a = 2
+          a = 3
+          a = 4
+        end
+      RUBY
+    end
+
+    it 'rejects a class with more than 5 lines' do
+      expect_offense(<<~RUBY)
+        class Test
+        ^^^^^^^^^^ Class has too many lines. [6/5]
+          A = B = C = 1
+          a = 2
+          a = 3
+          a = 4
+          a = 5
+          a = 6
+        end
+      RUBY
+    end
+  end
+
   context 'when CountComments is enabled' do
     before { cop_config['CountComments'] = true }
 

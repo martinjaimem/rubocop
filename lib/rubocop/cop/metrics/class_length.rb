@@ -42,7 +42,7 @@ module RuboCop
           parent = node.parent
 
           if parent&.assignment?
-            block_node = parent.children[1]
+            block_node = block_node_for_assignment_parent(parent)
           elsif parent&.parent&.masgn_type?
             block_node = parent.parent.children[1]
           else
@@ -53,6 +53,10 @@ module RuboCop
         end
 
         private
+
+        def block_node_for_assignment_parent(parent)
+          parent.children.drop(1).find { |child| child&.is_a?(RuboCop::AST::Node) }
+        end
 
         def message(length, max_length)
           format('Class has too many lines. [%<length>d/%<max>d]',
