@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#8882](https://github.com/rubocop-hq/rubocop/pull/8882): **(Potentially breaking)** RuboCop assumes that Cop classes do not define new `on_<type>` methods at runtime (e.g. via `extend`). ([@marcandre][])
+
 ## 0.93.0 (2020-10-08)
 
 ### New features
